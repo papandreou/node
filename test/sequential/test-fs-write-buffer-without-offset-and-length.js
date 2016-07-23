@@ -12,16 +12,16 @@ common.refreshTmpDir();
 fs.open(filename, 'w', 0o644, common.mustCall(function(err, fd) {
   if (err) throw err;
 
-  fs.write(fd,
-           expected,
-           common.mustCall(function(err, written) {
-             if (err) throw err;
+  var cb = common.mustCall(function(err, written) {
+    if (err) throw err;
 
-             assert.equal(expected.length, written);
-             fs.closeSync(fd);
+    assert.equal(expected.length, written);
+    fs.closeSync(fd);
 
-             var found = fs.readFileSync(filename, 'utf8');
-             assert.deepStrictEqual(expected.toString(), found);
-             fs.unlinkSync(filename);
-           }));
+    var found = fs.readFileSync(filename, 'utf8');
+    assert.deepStrictEqual(expected.toString(), found);
+    fs.unlinkSync(filename);
+  });
+
+  fs.write(fd, expected, cb);
 }));
