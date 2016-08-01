@@ -9,10 +9,10 @@ const filename = path.join(common.tmpDir, 'write.txt');
 common.refreshTmpDir();
 
 fs.open(filename, 'w', 0o644, common.mustCall(function(err, fd) {
-  if (err) throw err;
+  assert.ifError(err);
 
   const cb = common.mustCall(function(err, written) {
-    if (err) throw err;
+    assert.ifError(err);
 
     assert.equal(2, written);
     fs.closeSync(fd);

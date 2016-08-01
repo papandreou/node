@@ -10,10 +10,10 @@ const expected = Buffer.from('hello');
 common.refreshTmpDir();
 
 fs.open(filename, 'w', 0o644, common.mustCall(function(err, fd) {
-  if (err) throw err;
+  assert.ifError(err);
 
   const cb = common.mustCall(function(err, written) {
-    if (err) throw err;
+    assert.ifError(err);
 
     assert.equal(expected.length, written);
     fs.closeSync(fd);
