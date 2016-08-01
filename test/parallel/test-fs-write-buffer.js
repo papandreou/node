@@ -10,21 +10,17 @@ const expected = Buffer.from('hello');
 common.refreshTmpDir();
 
 fs.open(filename, 'w', 0o644, common.mustCall(function(err, fd) {
-  if (err) throw err;
+  assert.ifError(err);
 
-  fs.write(fd,
-           expected,
-           0,
-           expected.length,
-           null,
-           common.mustCall(function(err, written) {
-             if (err) throw err;
+  const cb = common.mustCall(function(err, written) {
+    assert.ifError(err);
 
-             assert.equal(expected.length, written);
-             fs.closeSync(fd);
+    assert.strictEqual(expected.length, written);
+    fs.closeSync(fd);
 
-             var found = fs.readFileSync(filename, 'utf8');
-             assert.deepStrictEqual(expected.toString(), found);
-             fs.unlinkSync(filename);
-           }));
+    var found = fs.readFileSync(filename, 'utf8');
+    assert.deepStrictEqual(expected.toString(), found);
+  });
+
+  fs.write(fd, expected, 0, expected.length, null, cb);
 }));
