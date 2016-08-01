@@ -19,7 +19,6 @@ fs.open(filename, 'w', 0o644, common.mustCall(function(err, fd) {
 
     const found = fs.readFileSync(filename, 'utf8');
     assert.deepStrictEqual('lo', found);
-    fs.unlinkSync(filename);
   });
 
   fs.write(fd, Buffer.from('hello'), 3, cb);
