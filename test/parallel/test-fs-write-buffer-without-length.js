@@ -14,7 +14,7 @@ fs.open(filename, 'w', 0o644, common.mustCall(function(err, fd) {
   const cb = common.mustCall(function(err, written) {
     assert.ifError(err);
 
-    assert.equal(2, written);
+    assert.strictEqual(2, written);
     fs.closeSync(fd);
 
     const found = fs.readFileSync(filename, 'utf8');
